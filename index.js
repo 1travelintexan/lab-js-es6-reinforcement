@@ -1,15 +1,19 @@
+let usersArray = require("./data");
+
 // ***************************************************************************
 // Iteration 1 - `for...of` loop
 // ***************************************************************************
 
-const getFirstNames = arr => {
+const getFirstNames = (arr) => {
   const userFirstNames = [];
   for (let user of arr) {
-    // Your code goes here ...
+    userFirstNames.push(user.firstName);
   }
+  return userFirstNames;
 };
 
-getFirstNames(usersArray);
+console.log(getFirstNames(usersArray));
+
 // expected output:
 // [ 'Kirby', 'Tracie', 'Kendra', 'Kinney', 'Howard', 'Rachelle', 'Lizzie' ]
 
@@ -17,11 +21,15 @@ getFirstNames(usersArray);
 // Iteration 2 - `for...of` loop and ES6 string literals `${}`
 // ***************************************************************************
 
-const getFullNames = arr => {
-  // Your code goes here ...
+const getFullNames = (arr) => {
+  const userFullNames = [];
+  for (let user of arr) {
+    userFullNames.push(`${user.firstName} ${user.lastName}`);
+  }
+  return userFullNames;
 };
 
-getFullNames(usersArray);
+console.log(getFullNames(usersArray));
 // expected output:
 // [ 'Kirby Doyle', 'Tracie May', 'Kendra Hines', 'Kinney Howard',
 //   'Howard Gilmore', 'Rachelle Schneider', 'Lizzie Alford' ]
@@ -30,11 +38,16 @@ getFullNames(usersArray);
 // Iteration 3 - ES6 destructuring , for of loop, object literal
 // ***************************************************************************
 
-const getUsersCreditDetails = arr => {
-  // Your code goes here ...
+const getUsersCreditDetails = (arr) => {
+  const userCreditDetails = [];
+  for (let user of arr) {
+    let { firstName, lastName, balance } = user;
+    userCreditDetails.push({ firstName, lastName, balance });
+  }
+  return userCreditDetails;
 };
 
-getUsersCreditDetails(usersArray);
+console.log(getUsersCreditDetails(usersArray));
 // expected output:
 // [ { firstName: 'Kirby', lastName: 'Doyle', balance: '$3,570.06' },
 // { firstName: 'Tracie', lastName: 'May', balance: '$1,547.73' },
@@ -48,11 +61,22 @@ getUsersCreditDetails(usersArray);
 // Iteration 4 - practice `.filter()` method and how to return two elements
 // ***************************************************************************
 
-const genderView = users => {
-  // Your code goes here ...
+const genderView = (users) => {
+  let femaleUsers = getFullNames(
+    users.filter((elem, index) => {
+      return elem.gender == "female";
+    })
+  );
+
+  let maleUsers = getFullNames(
+    users.filter((elem, index) => {
+      return elem.gender == "male";
+    })
+  );
+  return {femaleUsers,maleUsers}
 };
 
-genderView(usersArray);
+console.log(genderView(usersArray));
 // expected output:
 // {
 //    femaleUsers: [ 'Tracie May', 'Kendra Hines', 'Rachelle Schneider', 'Lizzie Alford' ],
@@ -65,11 +89,13 @@ genderView(usersArray);
 
 const data = genderView(usersArray);
 
-const genderCount = data => {
-  // Your code goes here ...
+const genderCount = (data) => {
+ let number = data.femaleUsers.length
+ let number2 = data.maleUsers.length
+return `Female: ${number}  Male:${number2}`
 };
 
-genderCount(data);
+console.log(genderCount(data));
 // expected output:
 // Female: 4
 // Male: 3
@@ -78,10 +104,16 @@ genderCount(data);
 // Bonus - Iteration 6
 // ***************************************************************************
 
-const promo20 = users => {
-  // Your code goes here ...
+const promo20 = (users) => {
+  let rich = users.filter((elem,index) => {
+   return  parseFloat(elem.balance.slice(1).replace(',', '')) >= 20000
+  })
+  rich.forEach((elem, index) => {
+      console.log(`Dear ${elem.firstName}, since your balance is ${elem.balance}, you are eligible for this awesome credit card.`)
+  })
 };
 
+promo20(usersArray);
 // expected output:
 // Dear Howard, since your balance is $21,307.75, you are eligible to apply for this awesome credit card.
 // Dear Rachelle, since your balance is $35,121.49, you are eligible to apply for this awesome credit card.
@@ -90,11 +122,15 @@ const promo20 = users => {
 // Bonus - Iteration 7
 // ***************************************************************************
 
-const addActive = users => {
-  // Your code goes here ...
+const addActive = (users) => {
+  users.forEach((elem) => {
+    elem.isActive = true  
+  })  
 };
 
+
 addActive(usersArray);
+console.log(usersArray)
 // expected output:
 // [
 //    { firstName: 'Kirby',
@@ -108,3 +144,5 @@ addActive(usersArray);
 //      // ...
 //    }
 // ]
+
+
